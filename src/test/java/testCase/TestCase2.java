@@ -31,6 +31,8 @@ public static void main(String[] args){
     System.out.println("View changed to One");
     System.out.println("Test Passed");
 
+    //will next work on pmi and plu codes automation and add conditinal statements aswell.
+
 
 
     page.waitForTimeout(2000);
