@@ -31,11 +31,32 @@ public static void main(String[] args){
     System.out.println("View changed to One");
     System.out.println("Test Passed");
 
-    //will next work on pmi and plu codes automation and add conditinal statements aswell.
+    //Pmi qr code
+    page.locator("#modePMIBtn").click();
+    System.out.println("PMI Section Opened");
+    page.locator("#pmiF2").fill("9874651231");
+    page.locator("#pmiF4").fill("8451789465");
+    page.locator("#pmiF6").fill("DK8946");
+    page.locator("#pmiCreateBtn").click();
+    System.out.println("SKU - Serial number - Material Code Entered");
+
+    page.locator("#generateBtn").click();
+    System.out.println("Code Generated");
+    System.out.println("PMI Test Passed");
+
+    //plu code
+    page.locator("#modePLUBtn").click();
+    page.locator("#pluSkuInput").fill("3146009846131");
+    page.locator("#pluWeightInput").fill("314600");
+    System.out.println("SKU + weight Entered");
+    page.locator("#pluCreateBtn").click();
 
 
+    page.locator("#generateBtn").click();
+    System.out.println("Code Generated");
+    System.out.println("PLU Test Passed");
 
-    page.waitForTimeout(2000);
+    page.waitForTimeout(3000);
     playwright.close();
 }
 
