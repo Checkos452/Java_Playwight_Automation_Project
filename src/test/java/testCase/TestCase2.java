@@ -7,10 +7,18 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
 import com.microsoft.playwright.*;
 import com.microsoft.playwright.options.LoadState;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TestCase2 {
-public static void main(String[] args){
+//public static void main(String[] args){
+    @Test
+    @Order(2)
+    void testcase2(){
     Playwright playwright = Playwright.create();
 
     LaunchOptions lp = new LaunchOptions();

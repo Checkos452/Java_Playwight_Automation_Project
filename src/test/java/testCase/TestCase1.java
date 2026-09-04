@@ -7,63 +7,74 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
 import com.microsoft.playwright.*;
 import com.microsoft.playwright.options.LoadState;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
+
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TestCase1 {
-	public static void main(String[] args) {
-		Playwright playwright = Playwright.create();
+	//public static void main(String[] args) {
 
-		LaunchOptions lp = new LaunchOptions();
-		lp.setHeadless(false);
+	@Test
+	@Order(1)
+		void login_testcase() {
+			Playwright playwright = Playwright.create();
 
-		Browser browser = playwright.webkit().launch(lp);
-		BrowserContext context_1 = browser.newContext();
-		Page page = context_1.newPage();
-		page.navigate("https://practicetestautomation.com/practice-test-login/");
+			LaunchOptions lp = new LaunchOptions();
+			lp.setHeadless(false);
 
-		// Fill login form
-		page.getByLabel("username").fill("student");
-		page.getByLabel("password").fill("Password123");
+			Browser browser = playwright.webkit().launch(lp);
+			BrowserContext context_1 = browser.newContext();
+			Page page = context_1.newPage();
+			page.navigate("https://practicetestautomation.com/practice-test-login/");
 
-		System.out.println("Username: " + page.getByLabel("username").inputValue());
-		System.out.println("Password: " + page.getByLabel("password").inputValue());
-		System.out.println("Credential Entered");
+			// Fill login form
+			page.getByLabel("username").fill("student");
+			page.getByLabel("password").fill("Password123");
 
-		page.locator("#submit").click();
+			System.out.println("Username: " + page.getByLabel("username").inputValue());
+			System.out.println("Password: " + page.getByLabel("password").inputValue());
+			System.out.println("Credential Entered");
 
-		// Wait for navigation to complete
-		page.waitForLoadState(LoadState.NETWORKIDLE);
+			page.locator("#submit").click();
 
-		// Check if login was successful
-		System.out.println("Current URL: " + page.url());
+			// Wait for navigation to complete
+			page.waitForLoadState(LoadState.NETWORKIDLE);
 
-		// ✓ CORRECT: Check if URL changed to success page
-		if(page.url().contains("logged-in-successfully")) {
-			System.out.println("Logged In Successfully ✓");
+			// Check if login was successful
+			System.out.println("Current URL: " + page.url());
 
-			page.getByText("Log out").click();
-			System.out.println("Logged Out successfully");
-			System.out.println("Test Passed ✓");
-		}
-		else {
-			// Check for error message if login failed
-			try {
-				if (page.locator("#error").isVisible()) {
-					String errorMessage = page.locator("#error").innerText();
-					System.out.println("Error: " + errorMessage);
+			// ✓ CORRECT: Check if URL changed to success page
+			if (page.url().contains("logged-in-successfully")) {
+				System.out.println("Logged In Successfully ✓");
 
-					if (errorMessage.contains("Your username is invalid!")) {
-						System.out.println("Invalid Username");
-					} else if (errorMessage.contains("Your password is invalid!")) {
-						System.out.println("Invalid Password");
+				page.getByText("Log out").click();
+				System.out.println("Logged Out successfully");
+				System.out.println("Test Passed ✓");
+			} else {
+				// Check for error message if login failed
+				try {
+					if (page.locator("#error").isVisible()) {
+						String errorMessage = page.locator("#error").innerText();
+						System.out.println("Error: " + errorMessage);
+
+						if (errorMessage.contains("Your username is invalid!")) {
+							System.out.println("Invalid Username");
+						} else if (errorMessage.contains("Your password is invalid!")) {
+							System.out.println("Invalid Password");
+						}
 					}
+				} catch (Exception e) {
+					System.out.println("No error message found");
 				}
-			} catch (Exception e) {
-				System.out.println("No error message found");
+				System.out.println("Login Failed ✗");
 			}
-			System.out.println("Login Failed ✗");
+
+			page.waitForTimeout(2000);
+			playwright.close();
 		}
 
-		page.waitForTimeout(2000);
-		playwright.close();
-	}
-}
+		}
+
